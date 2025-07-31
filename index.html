@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geppo導入事例探すくん・検索プロンプト集</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 全体のスタイル */
+        html {
+            scroll-behavior: smooth; /* スムーズなスクロール */
+        }
+        body {
+            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.8;
+            color: #34495e; /* テキストの色を少し柔らかく */
+            background-color: #f9fafb; /* 背景を白から少しグレーに */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px 50px;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        /* 見出しのスタイル */
+        h1, h2, h3, h4 {
+            margin-top: 2em;
+            margin-bottom: 1.2em;
+            font-weight: 700;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 12px; /* アイコンとテキストの間隔 */
+        }
+        h1 { 
+            font-size: 2.4em; 
+            padding-bottom: 0.5em; 
+            border-bottom: 3px solid #f0f0f0; 
+            color: #16a085; /* メインカラー */
+        }
+        h2 { 
+            font-size: 1.8em; 
+            padding-bottom: 0.4em; 
+            border-bottom: 2px solid #ecf0f1; 
+            color: #2980b9;
+            margin-top: 3em;
+        }
+        h3 { 
+            font-size: 1.4em;
+        }
+        h4 { 
+            font-size: 1.15em; 
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        /* プロンプトを囲む枠のスタイル */
+        blockquote {
+            background: linear-gradient(135deg, #f8f9fa, #eef2f5);
+            border-left: 6px solid #1abc9c; /* アクセントカラー */
+            padding: 20px 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        blockquote:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        /* プロンプトのテキストスタイル */
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 14.5px;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            color: #34495e;
+            background-color: transparent;
+            border: none;
+        }
+        
+        /* リストのスタイル */
+        ol, ul {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 0.8em;
+        }
+
+        /* 説明文のスタイル */
+        p {
+            font-size: 1.05em;
+            color: #555;
+        }
+
+        /* 目次のスタイル */
+        .toc-container {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px 30px;
+            margin: 40px 0;
+        }
+        .toc-container h3 {
+            margin-top: 0;
+            color: #2980b9;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .toc-list {
+            list-style-type: none;
+            padding-left: 0;
+            max-height: 0px; /* 初期状態は閉じる */
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .toc-list ul {
+            padding-left: 20px;
+            list-style-type: '・ ';
+        }
+        .toc-list a {
+            text-decoration: none;
+            color: #34495e;
+            transition: color 0.2s;
+        }
+        .toc-list a:hover {
+            color: #1abc9c;
+            text-decoration: underline;
+        }
+        .toc-toggle {
+            font-size: 0.8em;
+            font-weight: normal;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Geppo導入事例探すくん・検索プロンプト集
+    </h1>
+
+    <h3>はじめに</h3>
+    <p>事例探すくんにGeppoの事例を読み込ませて、欲しい情報やヒントをサクッと引き出すための「検索プロンプト（質問）」を集めました！</p>
+    <p>本文書に収録されたクエリは、基本的な情報探しから、事例の裏側にあるストーリーや成功の秘訣を探るような深掘りまで、いろんな調査に対応できるように作っています！</p>
+
+    <h3>カンタンな使い方:</h3>
+    <ol>
+        <li>このリストの中から自分の目的にピッタリなプロンプトを選んでコピーする。それぞれのプロンプトには「こんなことが知りたい時におすすめ！」っていう狙いがあるから、それを参考に選ぶとグッド！</li>
+        <li>最後に、コピーしたプロンプトをAIアシスタントの質問欄にペーストして、検索を実行するだけ！出てきた答えは、あくまでAIが事例を元に作ったものだから、「なるほど、こんな見方もあるのか〜」くらいの気持ちで、参考にするのがおすすめです。</li>
+    </ol>
+
+    <!-- 目次セクション -->
+    <div class="toc-container">
+        <h3>目次 <span class="toc-toggle">[開く]</span></h3>
+        <ul class="toc-list">
+            <li><strong><a href="#part1">第一部：【基本編】</a></strong>
+                <ul>
+                    <li>第1章：「こんな目的！」で探す
+                        <ul>
+                            <li><a href="#toc-1-1">1.1 従業員の定着・離職防止</a></li>
+                            <li><a href="#toc-1-2">1.2 新人や中途社員の早期離職</a></li>
+                            <li><a href="#toc-1-3">1.3 エンゲージメント向上</a></li>
+                        </ul>
+                    </li>
+                    <li>第2章：「この施策！」で探す
+                        <ul>
+                            <li><a href="#toc-2-1">2.1 1on1や面談の質向上</a></li>
+                            <li><a href="#toc-2-2">2.2 回答者へのフィードバック</a></li>
+                            <li><a href="#toc-2-3">2.3 良いコメントのシェア</a></li>
+                        </ul>
+                    </li>
+                    <!-- 他の章も同様に追加 -->
+                </ul>
+            </li>
+            <li><strong><a href="#part2">第二部：【上級編】</a></strong>
+                <ul>
+                    <li><a href="#toc-adv-1">第1項：「失敗から学んだ」リアルな話</a></li>
+                    <li><a href="#toc-adv-2">第2項：「え、そんな効果も！？」</a></li>
+                    <li><a href="#toc-adv-3">第3項：「ウチはあえてこうしてる！」</a></li>
+                    <li><a href="#toc-adv-4">第4項：「経営トップが動いた！」</a></li>
+                    <li><a href="#toc-adv-5">第5項：「ある一人の人生が変わった」</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h2 id="part1">第一部：【基本編】まずはコレ！目的の事例をサクッと見つけよう</h2>
+    <p>この章では、いろんな会社の状況をざっくり把握するための、基本的な探し方をまとめました。これを使えば、たくさんの事例の中から、自分たちと似たケースをすぐに見つけられるはずです！</p>
+
+    <h3 id="toc-chap1">第1章：「こんな目的！」で探す</h3>
+    <p>似たような課題で悩んでる会社の事例を参考にしたい時に、すごく便利！</p>
+
+    <h4 id="toc-1-1">1.1 従業員の定着・離職防止に取り組んでる事例、知りたい！</h4>
+    <blockquote><pre># 命令
+ソース内で言及される企業のうち、「離職防止」「定着率向上」「リテンション」を目的としてGeppoを活用した事例を網羅的に列挙すること。
+
+# 条件
+・該当する企業名
+・導入前の課題
+・具体的な活用方法
+・それによって得られた成果または定性的な効果
+上記4項目が識別できるよう、本文から関連箇所を引用しつつ要約を生成すること。出力は、企業ごとに項目を立て、箇条書き形式で整理すること。</pre></blockquote>
+
+    <h4 id="toc-1-2">1.2 新人や中途社員がすぐ辞めちゃう…何かヒントになる事例ある？</h4>
+    <blockquote><pre># 命令
+「早期離職」または「オンボーディング」の課題解決を目的としてGeppoを活用した事例を抽出すること。本分析は、人材の初期定着段階における阻害要因を特定し、介入策の有効性を評価する上で極めて重要である。
+
+# 条件
+特に「新卒」または「中途入社者」に対し、いかなる支援（例：面談、フォロー体制）が提供されたかが具体的に詳述されている箇所を特定されたい。また、人事部門と現場部門間の連携体制に関する言及が含まれる場合は、当該情報も併せて抽出すること。</pre></blockquote>
+
+    <h4 id="toc-1-3">1.3 エンゲージメントが上がった！っていう会社の事例が見たいな</h4>
+    <blockquote><pre># 命令
+「エンゲージメント向上」または「従業員満足度（ES）向上」を主要目的として掲げる事例を特定されたい。
+
+# 条件
+サーベイ結果が組織改善活動にどのように統合され、PDCAサイクルが運用されたか、そのプロセスが理解できるよう説明を生成すること。「エンゲージメントスコア」が重要業績評価指標（KPI）として言及されている場合は、その部分を詳細に引用し、可能であればその定義についても言及すること。</pre></blockquote>
+
+    <h3 id="toc-chap2">第2章：「この施策！」で探す</h3>
+    <p>Geppoが、他の人事施策とどう組み合わさって、いい効果を出しているのかを知りたい時に使ってください！</p>
+
+    <h4 id="toc-2-1">2.1 1on1や面談がもっと良くなった！っていう事例は？</h4>
+    <blockquote><pre># 命令
+Geppoを「1on1ミーティング」または「上長との面談」に応用している事例を検索すること。
+
+# 条件
+Geppoの導入が、1on1ミーティングの「質」に対し、いかなる影響を及ぼしたか（例：対話の触媒、議題の明確化、心理的開示の促進など）が示されている記述を引用・要約すること。可能な限り、導入前後のコミュニケーションの質的変化に関する直接的な言及を引用すること。</pre></blockquote>
+
+    <h4 id="toc-2-2">2.2 「答えっぱなし」にしない！回答者へのフィードバックを工夫してる事例は？</h4>
+    <blockquote><pre># 命令
+従業員からの回答に対し、「答えっぱなし」にせず、会社や人事がどのようにフィードバックしているか、具体的な取り組みをしている事例を抽出してください。
+
+# 条件
+・全社向けの説明会やイントラネットでの結果サマリー報告
+・「こんな意見を元に、ここを変えました」という改善報告
+・ポジティブなコメントへの感謝の伝達
+など、どんな方法で「答えてくれてありがとう、ちゃんと見てるよ」という姿勢を示しているか、その工夫を教えて。</pre></blockquote>
+
+    <h4 id="toc-2-3">2.3 良いコメント、どう活かしてる？朝会や会議でシェアしてる事例は？</h4>
+    <blockquote><pre># 命令
+Geppoに寄せられたポジティブなコメントや、改善に繋がる建設的な意見を、組織内で共有（シェア）している事例を探してください。
+
+# 条件
+・朝会、週次定例、全社集会など、どのような「場」で共有しているか。
+・「良い行動の称賛」「課題の共通認識化」「改善アイデアの募集」など、どのような「目的」でコメントをシェアしているか。
+その具体的なシーンがわかるエピソードを教えて。</pre></blockquote>
+
+    <h2 id="part2">第二部：【上級編】もっと深掘り！「すごい発見」を引き出そう</h2>
+    <p>ただ事例をなぞるだけじゃ物足りない！その裏にある本当のストーリーや、組織を動かすような大きなヒントを見つけ出したい、探求心旺盛なあなた様へ。</p>
+
+    <h4 id="toc-adv-1">第1項：「失敗から学んだ」リアルな話、教えて！</h4>
+    <p>（成功事例の再現性を高めるだけじゃなく、隠れたリスクを事前に知って、自分たちの計画をより良くするためのヒントが満載！）</p>
+    <blockquote><pre># 命令
+導入事例の中から、「導入初期段階における非効率性」「形骸化の兆候」「試行錯誤の過程」といった、何らかの"失敗"または"困難"を克服したことが示唆される事例を検索すること。本分析は、成功事例の再現性を高めるだけでなく、潜在的リスクを予見し、導入計画の堅牢性を確保するための重要な示唆を提供する。
+
+# 条件
+・直面した「失敗」または「困難」の具体的性質。
+・当該状況を打開するために講じられた具体的施策。
+・当該経験から得られた「教訓」または「知見」が示されている部分を引用し、要約すること。</pre></blockquote>
+
+    <h4 id="toc-adv-2">第2項：「え、そんな効果も！？」っていう想定外のラッキーな話</h4>
+    <p>（狙っていなかったけど、思わぬプラスの効果があった事例を発見！ツールの新しい価値や、意外な使い方のヒントが見つかるかも！）</p>
+    <blockquote><pre># 命令
+Geppo導入事例の中から、「当初の目的」とは異なる「非意図的な成果」または「偶発的な副産物」が創出されたと解釈しうる事例を抽出すること。組織施策がもたらす予期せぬ正の外部性を特定することは、ツールの価値を再定義し、新たな活用可能性を拓く上で有益である。
+
+# 条件
+・企業が初期に設定した「導入目的」の特定。
+・運用過程で発現した「非意-図的成果」の特定。
+・当該の非意dto的成果が発現した背景またはプロセスに関する記述を引用・要約すること。</pre></blockquote>
+
+    <h4 id="toc-adv-3">第3項：「ウチはあえてこうしてる！」常識を覆す使い方</h4>
+    <p>（「普通はこうだよね」っていうセオリーをあえて無視！自分たちの会社にピッタリな、オリジナルの運用方法を考える刺激が欲しい時に！）</p>
+    <blockquote><pre># 命令
+Geppoの運用方法において、一般的な理論や推奨される手法とは異なる、"独自の工夫"または"特異な規則"を設けている事例を抽出すること。本クエリは、ベストプラクティスとされるものに対する批判的検討を促し、各組織の固有の文脈に最適化された運用モデルを構想するための知的刺激を提供することを目的とする。
+
+# 条件
+・当該企業が実践している「独自の運用方法」の特定。
+・そのような非標準的運用を採用する「目的」または「思想」の説明。
+・当該の特異な運用によって得られている効果の提示。</pre></blockquote>
+
+    <h4 id="toc-adv-4">第4項：「経営トップが動いた！」インパクト絶大な話</h4>
+    <p>（人事データが、会社全体の戦略を動かすほどの力を持った事例を発見！人事の仕事の価値を、もっと大きな視点で証明したい時に！）</p>
+    <blockquote><pre># 命令
+従業員のデータまたはコメントが、人事領域を超越し、「経営判断」「事業戦略の再検討」「新規サービスの開発」といった、組織の根幹に関わる意思決定に影響を及ぼした事例の有無を調査すること。本分析は、人事データが戦略的資源として経営に活用される高度な段階を示す事例を特定し、HR機能の戦略的価値を論証する上での根拠を提供する。
+
+# 条件
+・従業員から提出された「意見・情報」の性質。
+・それが関連付けられた「経営レベルの意思決定」の内容。
+・その結果として組織または事業に及んだ影響。
+以上の因果関係を再構成して提示すること。</pre></blockquote>
+
+    <h4 id="toc-adv-5">第5項：「ある一人の人生が変わった」感動的なエピソード</h4>
+    <p>（会社の成果っていう大きな話だけじゃなく、一人の社員の人生に寄り添った、人間味あふれるストーリーに触れたい時に！）</p>
+    <blockquote><pre># 命令
+Geppoが契機となり、一従業員の「キャリア」「就業形態」、あるいは「人生」に好影響をもたらす転機が訪れたことを示す、個人的なエピソードまたは物語が含まれる事例を検索すること。本分析は、マクロな組織的成果の背後にある、ミクロな個人的体験の重要性を浮き彫りにし、施策の人間的側面に対する理解を深めることを目的とする。
+
+# 条件
+・当該従業員によって発信された「意見」の内容。
+・それを受理した組織または上長によって実行された「対応」。
+・その結果として当該従業員の状況にもたらされた好転の内容。
+組織の成功事例という観点ではなく、「一個人の物語」として記述されている部分を抽出すること。</pre></blockquote>
+
+</div>
+
+<script>
+    // 目次の開閉機能
+    const tocToggle = document.querySelector('.toc-toggle');
+    const tocList = document.querySelector('.toc-list');
+    if (tocToggle && tocList) {
+        tocToggle.parentElement.addEventListener('click', (event) => {
+            // リンクのクリックは除外
+            if (event.target.tagName === 'A') {
+                return;
+            }
+            event.preventDefault();
+            if (tocList.style.maxHeight === '0px' || tocList.style.maxHeight === '') {
+                tocList.style.maxHeight = tocList.scrollHeight + 'px';
+                tocToggle.textContent = '[閉じる]';
+            } else {
+                tocList.style.maxHeight = '0px';
+                tocToggle.textContent = '[開く]';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
